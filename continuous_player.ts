@@ -4,6 +4,7 @@ class ContinuousShootPlayer{
   readonly document: HTMLDocument
   readonly reader: LightningQrReader
   private timerId
+  private interval: number
 
   constructor(document: HTMLDocument) {
     this.document = document
@@ -11,11 +12,19 @@ class ContinuousShootPlayer{
     this.reader.showStream()
   }
 
+  get intervalTime() {
+    return this.interval
+  }
+
+  set intervalTime(msec) {
+    this.interval = msec
+  }
+
   start() {
     this._appendPicture()
     this.timerId = setInterval(() => {
       this._appendPicture()
-    }, 1000)
+    }, this.intervalTime)
   }
 
   stop() {
@@ -31,9 +40,10 @@ class ContinuousShootPlayer{
   }
 }
 
-
 window.onload = () => {
   const player = new ContinuousShootPlayer(document)
+  player.intervalTime = 1000
+
   document.getElementById('start').addEventListener('click', () => {
     player.start()
   })

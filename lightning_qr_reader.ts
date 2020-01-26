@@ -14,7 +14,15 @@ export class LightningQrReader {
     this.canvas.toBlob(callback)
   }
 
-  getStream() {
+  async showStream() {
+    this.video.srcObject = await this._getStream()
+    this.video.addEventListener('loadedmetadata', () => {
+      this._adjustCanvasSize()
+      this.video.play()
+    })
+  }
+
+  _getStream() {
     const config = {
       video: {
         audio: false,
@@ -24,16 +32,7 @@ export class LightningQrReader {
     return navigator.mediaDevices.getUserMedia(config)
   }
 
-  async showStream() {
-    const stream = await this.getStream()
-    this.video.srcObject = stream
-    this.video.addEventListener('loadedmetadata', () => {
-      this.adjustCanvasSize()
-      this.video.play()
-    })
-  }
-
-  adjustCanvasSize() {
+  _adjustCanvasSize() {
     this.canvas.width = this.video.videoWidth
     this.canvas.height = this.video.videoHeight
   }
