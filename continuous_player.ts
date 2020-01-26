@@ -12,7 +12,7 @@ class ContinuousShootPlayer{
     this.reader.showStream()
   }
 
-  get intervalTime() {
+  get intervalTime(): number {
     return this.interval
   }
 
@@ -20,18 +20,18 @@ class ContinuousShootPlayer{
     this.interval = msec
   }
 
-  start() {
+  start(): void {
     this._appendPicture()
     this.timerId = setInterval(() => {
       this._appendPicture()
     }, this.intervalTime)
   }
 
-  stop() {
+  stop(): void  {
     clearInterval(this.timerId)
   }
 
-  _appendPicture() {
+  _appendPicture(): void  {
     this.reader.capture(blob => {
       const img = new Image()
       img.src = URL.createObjectURL(blob)
@@ -40,7 +40,7 @@ class ContinuousShootPlayer{
   }
 }
 
-window.onload = () => {
+window.onload = (): void => {
   const player = new ContinuousShootPlayer(document)
   player.intervalTime = 1000
 
