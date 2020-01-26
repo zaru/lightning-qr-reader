@@ -1,6 +1,4 @@
-console.log('hello world')
-
-class LightningQrReader {
+export class LightningQrReader {
   readonly document: HTMLDocument
   readonly video: HTMLVideoElement
   readonly canvas: HTMLCanvasElement
@@ -9,13 +7,6 @@ class LightningQrReader {
     this.document = document
     this.video = this.document.getElementById('video') as HTMLVideoElement
     this.canvas = this.document.getElementById('canvas') as HTMLCanvasElement
-  }
-
-  takePhotosContinuously() {
-    this.capture(blob => {
-      const img = new Image()
-      img.src = URL.createObjectURL(blob)
-    })
   }
 
   capture(callback: BlobCallback) {
@@ -37,31 +28,13 @@ class LightningQrReader {
     const stream = await this.getStream()
     this.video.srcObject = stream
     this.video.addEventListener('loadedmetadata', () => {
+      this.adjustCanvasSize()
       this.video.play()
     })
   }
-}
 
-class ContinuousShootPlayer{
-  constructor(document: HTMLDocument) {
-    const lightningQrReader = new LightningQrReader(document)
-    lightningQrReader.showStream()
+  adjustCanvasSize() {
+    this.canvas.width = this.video.videoWidth
+    this.canvas.height = this.video.videoHeight
   }
-
-  start() {
-
-  }
-
-  stop() {
-
-  }
-
-  appendPicture() {
-
-  }
-}
-
-
-window.onload = () => {
-  const player = new ContinuousShootPlayer(document)
 }
