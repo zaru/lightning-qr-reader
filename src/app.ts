@@ -7,7 +7,7 @@ class QrReader {
   private timerId
   private interval: number
   private result: string[]
-  private callback: Function
+  private callback: (result: string[]) => void
 
   constructor(document: HTMLDocument) {
     this.document = document
@@ -24,7 +24,7 @@ class QrReader {
     this.interval = msec
   }
 
-  set updateCallback(callback: Function) {
+  set updateCallback(callback: (result: string[]) => void) {
     this.callback = callback
   }
 
@@ -54,7 +54,7 @@ window.onload = (): void => {
 
   const reader = new QrReader(document)
   reader.intervalTime = 1000
-  reader.updateCallback = result => {
+  reader.updateCallback = (result): void => {
     resultElm.value = result.join("\n")
     resultElm.scrollTop = resultElm.scrollHeight
     console.log(result)
