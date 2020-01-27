@@ -1,3 +1,17 @@
+
+
+@keyframes fadeoutin {
+  0% {
+    opacity: 1;
+  }
+  50%{
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
 .video-section {
   padding: 10px;
 
@@ -5,6 +19,14 @@
     display: block;
     width: 60%;
     margin: auto;
+
+    opacity: 1;
+
+    &.fadeoutin {
+      animation-name: fadeoutin;
+      animation-duration: 0.5s;
+      animation-fill-mode: forwards;
+    }
   }
 }
 

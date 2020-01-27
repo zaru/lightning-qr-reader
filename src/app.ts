@@ -51,6 +51,7 @@ class QrReader {
 
 window.onload = (): void => {
   const resultElm = document.getElementById('result') as HTMLTextAreaElement
+  const videoElm = document.getElementById('video') as HTMLVideoElement
 
   const reader = new QrReader(document)
   reader.intervalTime = 1000
@@ -58,7 +59,12 @@ window.onload = (): void => {
     resultElm.value = result.join("\n")
     resultElm.scrollTop = resultElm.scrollHeight
     console.log(result)
+    videoElm.classList.add('fadeoutin')
   }
+
+  videoElm.addEventListener('animationend', () => {
+    videoElm.classList.remove('fadeoutin')
+  })
 
   document.getElementById('start').addEventListener('click', () => {
     reader.start()
