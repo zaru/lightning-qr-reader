@@ -1,8 +1,10 @@
 # Lightning QR Reader for Web
 
+https://lightning-qr.zaru.dev/
+
 ## Development
 
 ```
 $ npm install
-$ parcel continuous_player.html
+$ npm run serve
 ```
