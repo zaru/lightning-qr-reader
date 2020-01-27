@@ -13,13 +13,12 @@
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^2.17.0",
     "@typescript-eslint/parser": "^2.17.0",
+    "cssnano": "^4.1.10",
     "eslint": "^6.8.0",
     "sass": "^1.25.1-test.1",
     "typescript": "^3.7.5"
   },
   "dependencies": {
-    "@zxing/library": "^0.15.2",
-    "javascript-barcode-reader": "^0.5.4",
     "jsqr": "^1.2.0"
   }
 }
