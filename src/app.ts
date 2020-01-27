@@ -1,15 +1,19 @@
 import { Camera } from './camera'
+import jsQR from 'jsqr'
 
-class ContinuousShootPlayer{
+class QrReader {
   readonly document: HTMLDocument
-  readonly reader: Camera
+  readonly camera: Camera
   private timerId
   private interval: number
+  private result: string[]
+  private callback: Function
 
   constructor(document: HTMLDocument) {
     this.document = document
-    this.reader = new Camera(this.document)
-    this.reader.showStream()
+    this.camera = new Camera(this.document)
+    this.camera.showStream()
+    this.result = []
   }
 
   get intervalTime(): number {
@@ -20,10 +24,14 @@ class ContinuousShootPlayer{
     this.interval = msec
   }
 
+  set updateCallback(callback: Function) {
+    this.callback = callback
+  }
+
   start(): void {
-    this._appendPicture()
+    this._parseQR()
     this.timerId = setInterval(() => {
-      this._appendPicture()
+      this._parseQR()
     }, this.intervalTime)
   }
 
@@ -31,23 +39,35 @@ class ContinuousShootPlayer{
     clearInterval(this.timerId)
   }
 
-  _appendPicture(): void  {
-    this.reader.capture(blob => {
-      const img = new Image()
-      img.src = URL.createObjectURL(blob)
-      this.document.getElementById('photos').appendChild(img)
-    })
+  _parseQR(): void  {
+    const data = this.camera.capture()
+    const code = jsQR(data, this.camera.video.videoWidth, this.camera.video.videoHeight)
+    if (code && !this.result.includes(code.data)) {
+      this.result.push(code.data)
+      this.callback(this.result)
+    }
   }
 }
 
 window.onload = (): void => {
-  const player = new ContinuousShootPlayer(document)
-  player.intervalTime = 1000
+  const resultElm = document.getElementById('result') as HTMLTextAreaElement
+
+  const reader = new QrReader(document)
+  reader.intervalTime = 1000
+  reader.updateCallback = result => {
+    resultElm.value = result.join("\n")
+    resultElm.scrollTop = resultElm.scrollHeight
+    console.log(result)
+  }
 
   document.getElementById('start').addEventListener('click', () => {
-    player.start()
+    reader.start()
   })
   document.getElementById('stop').addEventListener('click', () => {
-    player.stop()
+    reader.stop()
+  })
+  document.getElementById('copy').addEventListener('click', () => {
+    resultElm.select()
+    document.execCommand('copy')
   })
 }

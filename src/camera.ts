@@ -9,9 +9,10 @@ export class Camera {
     this.canvas = this.document.getElementById('canvas') as HTMLCanvasElement
   }
 
-  capture(callback: BlobCallback): void {
-    this.canvas.getContext('2d').drawImage(this.video, 0, 0, this.video.videoWidth, this.video.videoHeight)
-    this.canvas.toBlob(callback)
+  capture(): Uint8ClampedArray {
+    const ctx = this.canvas.getContext('2d')
+    ctx.drawImage(this.video, 0, 0, this.video.videoWidth, this.video.videoHeight)
+    return ctx.getImageData(0, 0, this.video.videoWidth, this.video.videoHeight).data
   }
 
   async showStream(): Promise<void> {
