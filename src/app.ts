@@ -1,14 +1,14 @@
-import { LightningQrReader } from './lightning_qr_reader'
+import { Camera } from './camera'
 
 class ContinuousShootPlayer{
   readonly document: HTMLDocument
-  readonly reader: LightningQrReader
+  readonly reader: Camera
   private timerId
   private interval: number
 
   constructor(document: HTMLDocument) {
     this.document = document
-    this.reader = new LightningQrReader(this.document)
+    this.reader = new Camera(this.document)
     this.reader.showStream()
   }
 

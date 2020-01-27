@@ -1,4 +1,4 @@
-export class LightningQrReader {
+export class Camera {
   readonly document: HTMLDocument
   readonly video: HTMLVideoElement
   readonly canvas: HTMLCanvasElement
